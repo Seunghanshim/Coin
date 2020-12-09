@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/header :: header">
+</head>
+<style>
+
+    .display {
+        display: inline;
+    }
+
+    .e-container {
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        font-weight: 400;
+        height: 384px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+</style>
+<body>
+<nav th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div class="container">
+    <div class="jumbotron">
+        <div style="float: left; display: inline">
+            <img th:src="${'/img/logo/' + #strings.substringAfter(coin.market, '-').toLowerCase() + '.png'}"
+                 onerror="src = '/img/logo/eee.png'"
+                 style="height: 100px; width: 100px;">
+        </div>
+        <h1 th:text="${coin.market}" class="float-left display" style="padding: 24px 0px 0px 24px"></h1>
+
+        <a onclick="userAction()" sec:authorize="isAuthenticated()">
+            <div style="float: right; display: inline">
+                <img id="star" th:src="${favor ? '/img/star2.png' : '/img/star.png'}"
+                     style="height: 80px; width: 80px; margin: 10px 30px 10px 24px">
+            </div>
+        </a>
+        <br clear="both">
+        <br>
+        <br>
+
+        <div class="e-container">
+<!--            <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/2213_RC01/embed_loader.js">-->
+
+<!--            </script>-->
+<!--            <script th:inline="javascript" type="text/javascript">-->
+<!--                trends.embed.renderExploreWidget("TIMESERIES", {-->
+<!--                        "comparisonItem": [{-->
+<!--                            "keyword": [[${coin.eng}]],-->
+<!--                            "geo": "",-->
+<!--                            "time": "now 7-d"-->
+<!--                        }], "category": 7, "property": ""-->
+<!--                    },-->
+<!--                    {-->
+<!--                        "exploreQuery": "cat=7&q=%EB%B9%84%ED%8A%B8%20%EC%BD%94%EC%9D%B8&date=now 7-d",-->
+<!--                        "guestPath": "https://trends.google.co.kr:443/trends/embed/"-->
+<!--                    });-->
+<!--            </script>-->
+            <img src="/img/1.PNG">
+        </div>
+        <br>
+        <table class="table table-light table-striped">
+            <thead>
+            <tr>
+                <th>카테고리</th>
+                <th>예정일</th>
+                <th>호재</th>
+            </tr>
+            </thead>
+            <tr class="c" th:each="event : ${eventList}">
+                <td th:text="${event.category}"></td>
+                <td th:text="${event.when}"></td>
+                <td th:text="${event.what}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+
+<script th:inline="javascript">
+    /* <![CDATA[ */
+    var name = /*[[${name}]]*/;
+    /* ]]> */
+    /* <![CDATA[ */
+    var coin = /*[[${coin.market}]]*/;
+    /* ]]> */
+
+    const userAction = async () => {
+        const request = await fetch('/api/user/' + name + '/favor', {
+            method: 'PUT',
+            body: JSON.stringify({
+                market: coin
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const response = await request.json();
+
+        if(response) document.getElementById("star").src = '/img/star2.png';
+        else document.getElementById("star").src = '/img/star.png';
+    }
+
+</script>
+</body>
+</html>

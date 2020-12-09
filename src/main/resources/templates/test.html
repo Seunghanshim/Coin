@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div class="jumbotron">
+        <h1>Ranking Coin test</h1>
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+
+</body>
+</html>

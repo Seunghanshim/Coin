@@ -1,0 +1,262 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/header :: header" />
+
+<body style="background-color: #f0f0f0">
+
+<nav th:replace="fragments/bodyHeader :: bodyHeader" />
+
+<div class="c-wrap">
+    <div class="c-container">
+        <div class="coin-index-content">
+            <div class="coin-index-content-main">
+                <div class="coin-list-filter">
+                    <h22>What is Ranking Coin?</h22>
+                </div>
+                <div class="coin-help">
+                    <img src="/img/RANKING_COIN_LOGO2.png" style="width: 590px; height: auto;">
+                    <h33>높은 잠재 가치를 가진 시장</h33>
+                    <h44>최근 암호화폐에 대한 관심이 높아지면서 투자를 하는 사람들이 급속도로 증가하고 있다.</h44>
+                    <h44>최초의 암호화폐인 비트코인을 시작으로 이더리움, 리플 등의 다양한 형태의 알트코인들이 등장하였다.</h44>
+                    <h33>그러나 불안정성과 높은 진입장벽</h33>
+
+                    <h44>현재 국내에서 많이 쓰이는 거래소 중 하나인 Upbit만 하더라도 원화로 직접 거래할 수 있는 코인이 약 100개 가까이 상장되어있다.</h44>
+                    <h44>이 코인 중 어떤 코인은 하루에도 몇 배씩 오르고 내린다. 변동성이 큰 시장인 만큼 투자자들은 정보에 민감해지고 근거 있는 투자를 원한다.</h44>
+                    <h44>또한 초보 투자자들에게는 높은 변동성이 부담으로 다가와 쉽게 접근하기 힘든 시장이기도 하다.</h44>
+                    <h33>Ranking Coin</h33>
+                    <h44>Ranking Coin은 각 코인에 근거 있는 점수를 부여하고 투자자들에게 제공함으로써 투자에 대한 리스크를    낮추고, 모의 투자를 지원하여 코인 투자에 대한 진입 장벽을 낮추고자 한다.</h44>
+                    <h44>더 나아가 커뮤니티를 활성화하여 국내 최초 Coin 전문 플랫폼으로 자리 잡기를 기대한다.</h44>
+                    <img src="/img/prophet.PNG" style="width: 590px; height: auto;">
+                    <img src="/img/prophet2.PNG" style="width: 550px; height: auto; margin: 15px">
+                    <h33>Facebook Prophet</h33>
+                    <h44>먼저 g(t) : Trend function은 시계열 값의 비주기적 변화를 모형화하는 추세함수이고,</h44>
+                    <h44>s(t) : Seasonality function은 주기적 변화(예를 들어 주간 및 연간),</h44>
+                    <h44>h(t) : Holiday function은 1일 이상에 걸쳐 잠재적으로 불규칙한 일정에 발생하는 휴일의 영향을 나타낸다.</h44>
+                    <h44>오차항 e는 모델이 수용하지 않는 모든 특이적 변화를 나타낸다.</h44>
+                </div>
+            </div>
+            <div class="coin-index-content-side">
+                <div class="coin-index-trend-header">
+                    <h22>코인 순위</h22>
+                    <div class="coin-list-filter-keyword">
+                        <input id="txtSearch" type="text" placeholder="코인 검색">
+                    </div>
+                </div>
+                <div class="coin-index-trend-content">
+                    <ul2 class="coin-index-trend-position" sec:authorize="isAuthenticated()">
+                        <li2 id = "bt1" class="coin-index-trend-position-item active">
+                            <a id="b1">전체</a>
+                        </li2>
+                        <li2 id = "bt2" class="coin-index-trend-position-item">
+                            <a id="b2">관심</a>
+                        </li2>
+                    </ul2>
+                    <table id="coinTable" class="coin-index-table">
+                        <colgroup>
+                            <col width="50">
+                            <col width="40">
+                            <col>
+                            <col width="65">
+                            <col width="65">
+                            <col width="90">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="coin-index-table-header">#</th>
+                            <th class="coin-index-table-header" colspan="2">코인</th>
+                            <th class="coin-index-table-header">관심도</th>
+                            <th class="coin-index-table-header">점수</th>
+                            <th class="coin-index-table-header">호재</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="coin : ${coinList}">
+                            <td class="coin-index-table-cell coin-index-table-cell-rank" th:text="${coinStat.count}"></td>
+                            <td class="coin-index-table-cell coin-index-table-cell-image">
+                                <a th:href="@{/coin/{id}/view (id=${coin.id})}">
+                                    <img th:src="${'/img/logo/' + #strings.substringAfter(coin.market, '-').toLowerCase() + '.png'}"
+                                         onerror="src = '/img/logo/eee.png'"
+                                         style="height: 32px; width: 32px;">
+                                </a>
+                            </td>
+                            <td class="coin-index-table-cell coin-index-table-cell-coin">
+                                <a th:href="@{/coin/{id}/view (id=${coin.id})}" style="text-align: left; color: black;">
+                                    <div class="auto-item-name2" th:text="${coin.kor}"></div>
+                                    <div class="auto-item-info" th:text="${coin.eng}"></div>
+                                </a>
+                            </td>
+                            <td class="coin-index-table-cell coin-index-table-cell-value" th:text="${#numbers.formatDecimal(1.0 * coin.vol / max * 100, 1, 2)}"></td>
+                            <td class="coin-index-table-cell coin-index-table-cell-value" th:text="${coin.op}"></td>
+                            <td class="coin-index-table-cell coin-index-table-cell-rank" th:text="${coin.hasEvent} ? 'O' : ' '"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script th:inline ="javascript">
+    /* <![CDATA[ */
+    var coinList = /*[[${coinList}]]*/;
+    /* ]]> */
+    /* <![CDATA[ */
+    var favorList = /*[[${favorList}]]*/;
+    /* ]]> */
+    /* <![CDATA[ */
+    var max = /*[[${max}]]*/;
+    /* ]]> */
+
+    var check = true;
+
+    const $tmp = document.querySelector("#txtSearch");
+    $tmp.addEventListener('keyup', function() {
+        let value = this.value;
+        console.log(value)
+        if(check) {
+            let data = FilterKeyword(value, coinList);
+            rebuildTable(data)
+        }
+        else {
+            let data = FilterKeyword(value, favorList);
+            rebuildTable(data)
+        }
+    });
+
+    const $b1 = document.querySelector("#b1");
+    $b1.addEventListener('click', function () {
+        rebuildTable2(coinList)
+        document.querySelector("#bt2").classList.remove('active');
+        document.querySelector("#bt1").classList.add('active');
+        check = true;
+    });
+
+    const $b2 = document.querySelector("#b2");
+    $b2.addEventListener('click', function () {
+        rebuildTable2(favorList)
+        document.querySelector("#bt1").classList.remove('active');
+        document.querySelector("#bt2").classList.add('active');
+        check = false;
+    });
+
+    function FilterKeyword(value, data) {
+        var filteredData = [];
+        if(value == '') return data;
+        for(var i = 0; i < data.length; i++){
+            var val = value.toLowerCase();
+            var ename = data[i].eng.toLowerCase();
+            var kname = data[i].kor.toLowerCase();
+
+            if(ename.includes(val) || kname.includes(val)){
+                filteredData.push(data[i]);
+            }
+        }
+        return filteredData;
+    }
+
+    function rebuildTable(data) {
+        var table = document.querySelector("#coinTable")
+        table.innerHTML=`<colgroup>
+                                        <col width="50">
+                                        <col width="40">
+                                        <col>
+                                        <col width="65">
+                                        <col width="65">
+                                        <col width="90">
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th class="coin-index-table-header">#</th>
+                                            <th class="coin-index-table-header" colspan="2">코인</th>
+                                            <th class="coin-index-table-header">관심도</th>
+                                            <th class="coin-index-table-header">점수</th>
+                                            <th class="coin-index-table-header">호재</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`
+        for(let i = 0; i < 20; i++){
+            let src = data[i].market.substring(4, data[i].market.length).toLowerCase()
+            let op = (data[i].vol % 100 + 50.0) / 2 + (data[i].krw % 100) / 100.0
+            let att = 1.0 * data[i].vol / max * 100
+            let row = `<tr>
+                            <td class="coin-index-table-cell coin-index-table-cell-rank">${i + 1}</td>
+                            <td class="coin-index-table-cell coin-index-table-cell-image">
+                                <a href="/coin/${data[i].id}/view">
+                                    <img src = "/img/logo/${src}.png" onerror="src = '/img/logo/eee.png'" style="width: 32px; height: 32px;">
+                                </a>
+                            </td>
+                            <td class="coin-index-table-cell coin-index-table-cell-coin">
+                                <a href="/coin/${data[i].id}/view"
+                                   style="text-align: left; color: black;">
+                                    <div class="auto-item-name">${data[i].kor}</div>
+                                    <div class="auto-item-info">${data[i].eng}</div>
+                                </a>
+                            </td>
+                            <td class="coin-index-table-cell coin-index-table-cell-value">${att.toFixed(2)}</td>
+                            <td class="coin-index-table-cell coin-index-table-cell-value">${op.toFixed(2)}</td>`
+            if(data[i].hasEvent) {
+                row += `<td class="coin-index-table-cell coin-index-table-cell-rank">O</td>`
+            }
+            else row += `<td class="coin-index-table-cell coin-index-table-cell-rank"></td>`
+
+            row += `</tr>`
+            table.innerHTML += row
+        }
+        table.innerHTML += '</tbody>'
+    }
+
+    function rebuildTable2(data) {
+        var table = document.querySelector("#coinTable")
+        table.innerHTML=`<colgroup>
+                                        <col width="50">
+                                        <col width="40">
+                                        <col>
+                                        <col width="65">
+                                        <col width="65">
+                                        <col width="90">
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th class="coin-index-table-header">#</th>
+                                            <th class="coin-index-table-header" colspan="2">코인</th>
+                                            <th class="coin-index-table-header">관심도</th>
+                                            <th class="coin-index-table-header">점수</th>
+                                            <th class="coin-index-table-header">호재</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`
+        for(let i = 0; i< data.length && i < 20; i++){
+            let src = data[i].market.substring(4, data[i].market.length).toLowerCase()
+            let att = 1.0 * data[i].vol / max * 100
+            let op = (data[i].vol % 100 + 50.0) / 2 + (data[i].krw % 100) / 100.0
+            let row = `<tr>
+                            <td class="coin-index-table-cell coin-index-table-cell-rank">${i + 1}</td>
+                            <td class="coin-index-table-cell coin-index-table-cell-image">
+                                <a href="/coin/${data[i].id}/view">
+                                    <img src = "/img/logo/${src}.png" onerror="src = '/img/logo/eee.png'" style="width: 32px; height: 32px;">
+                                </a>
+                            </td>
+                            <td class="coin-index-table-cell coin-index-table-cell-coin">
+                                <a href="/coin/${data[i].id}/view"
+                                   style="text-align: left; color: black;">
+                                    <div class="auto-item-name">${data[i].kor}</div>
+                                    <div class="auto-item-info">${data[i].eng}</div>
+                                </a>
+                            </td>
+                            <td class="coin-index-table-cell coin-index-table-cell-value">${att.toFixed(2)}</td>
+                            <td class="coin-index-table-cell coin-index-table-cell-value">${op.toFixed(2)}</td>`
+            if(data[i].hasEvent) {
+                row += `<td class="coin-index-table-cell coin-index-table-cell-rank">O</td>`
+            }
+            else row += `<td class="coin-index-table-cell coin-index-table-cell-rank"></td>`
+
+            row += `</tr>`
+            table.innerHTML += row
+        }
+        table.innerHTML += '</tbody>'
+    }
+</script>
+</body>
+</html>

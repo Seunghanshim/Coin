@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<nav th:replace="fragments/bodyHeader :: bodyHeader" />
+<div class="container-lg">
+
+    <div class="jumbotron-fluid">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>보유 금액</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="c" th:each="user : ${userList}">
+                <td th:text="${userStat.count}"></td>
+                <td th:text="${user.getName()}"></td>
+                <td th:text="${#numbers.formatInteger(user.krw, 0,'COMMA')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>

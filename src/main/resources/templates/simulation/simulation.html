@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/header :: header">
+</head>
+<style>
+    .display{
+        display: inline;
+    }
+
+    .e-table{
+        min-width: 250px;
+    }
+</style>
+<body>
+<div class="container-lg">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div class="jumbotron">
+        <h1 th:text="'Total: ' + ${#numbers.formatInteger(sum,0,'COMMA')}"></h1>
+        <br>
+
+        <p th:text="'Update: ' + ${update}" class="float-left display"></p>
+        <form class="float-right" role="form" th:action="@{/sim/init}" method="post">
+            <button type="submit" class="btn-sm btn-danger">초기화</button>
+        </form>
+        <br clear="both">
+
+        <table class="table-sm table-light table-striped float-left display">
+            <thead>
+            <tr>
+                <th>코인</th>
+                <th>가격</th>
+                <th>개수</th>
+                <th>주문</th>
+            </tr>
+            </thead>
+            <tr class="c" th:each="coin : ${coinList}">
+                <td th:text="${coin.kor}"></td>
+                <td th:text="${#numbers.formatInteger(coin.krw,0,'COMMA')}"></td>
+                <form role="form" th:action="@{/sim/order/{id} (id = ${coin.id}, order = 1)}" method="post">
+                    <td>
+                        <input type="number" name="num" id = "num" value="0" class="form-control-sm">
+                    </td>
+                    <td>
+                        <button type="submit" class="btn-sm btn-danger">Buy</button>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table-sm table-light table-striped float-right" width="550">
+            <thead>
+            <tr>
+                <th>코인</th>
+                <th>보유 개수</th>
+                <th>가격</th>
+                <th>개수</th>
+                <th>주문</th>
+            </tr>
+            </thead>
+            <tr class="c">
+                <td th:text = "'KRW'"></td>
+                <td th:text = "${#numbers.formatInteger(userKrw,0,'COMMA')}"></td>
+                <td th:text = "'1'"></td>
+                <form role="form">
+                    <td>
+                        <input type="number" class="form-control-sm">
+                    </td>
+                    <td>
+                        <button type="submit" class="btn-sm btn-primary"></button>
+                    </td>
+                </form>
+            </tr>
+            <tr class="c" th:each="coin : ${walletList}">
+                <td th:text="${coin.coin.kor}"></td>
+                <td th:text="${coin.coinNum}"></td>
+                <td th:text = "${#numbers.formatInteger(coin.coinNum * coin.coin.krw,0,'COMMA')}"></td>
+                <form role="form" th:action="@{/sim/order/{id} (id = ${coin.coin.id}, order = -1)}" method="post">
+                    <td>
+                        <input type="number" name="num" id = "num2" value="0" class="form-control-sm">
+                    </td>
+                    <td>
+                        <button type="submit" class="btn-sm btn-primary">Sell</button>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+        <br clear="both">
+        <br>
+
+        </table>
+        <table class="table table-light table-striped">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>코인</th>
+                <th>거래 가격</th>
+                <th>개수</th>
+                <th>주문</th>
+            </tr>
+            </thead>
+            <tr class="c" th:each="sim : ${simulationList}">
+                <td th:text="${sim.when}"></td>
+                <td th:text="${sim.coin.kor}"></td>
+                <td th:text="${#numbers.formatInteger(sim.coinPrice,0,'COMMA')}"></td>
+                <td th:text="${sim.coinNum} > 0 ? ${sim.coinNum} : ${sim.coinNum} * -1"></td>
+                <td>
+                    <p th:class="${sim.coinNum} > 0 ? 'btn-sm btn-primary' : 'btn-sm btn-danger'"
+                       th:text="${sim.coinNum} > 0 ? 'Buy':'Sell'"></p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+
+</body>
+</html>

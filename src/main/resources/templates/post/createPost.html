@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<style>
+    .fieldError {
+        border-color: #bd2130;
+    }
+
+    .display {
+        display: inline-block;
+    }
+</style>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <form role="form" th:action="@{/post/new (username = ${username})}" th:object="${postForm}" method="post">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>
+                    <input type="text" th:field="*{title}" class="form-control"
+                           placeholder="제목을 입력하세요"
+                           th:class="${#fields.hasErrors('title')}? 'form-control fieldError' : 'form-control'">
+                    <p th:if="${#fields.hasErrors('title')}"
+                       th:errors="*{title}">Incorrect date</p>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <textarea type="html" th:field="*{text}" style="height: 400px" class="form"
+                                  placeholder="내용을 입력하세요"
+                                  th:class="${#fields.hasErrors('text')}? 'form-control fieldError' : 'form-control'"></textarea>
+                        <p th:if="${#fields.hasErrors('text')}"
+                           th:errors="*{text}">Incorrect date</p>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="form-inline float-right">
+            <div style="padding-right: 10px;">익명<input type="checkbox" th:field="*{anonymous}" th:value="true"></div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <br clear="right">
+    </form>
+    <br/>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>

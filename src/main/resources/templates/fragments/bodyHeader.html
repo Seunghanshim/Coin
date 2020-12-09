@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<nav th:fragment="bodyHeader" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/">Ranking coin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+        <!--            <li class="nav-item active">-->
+        <!--                <a class="nav-link" href="#">홈 <span class="sr-only">(current)</span></a>-->
+        <!--            </li>-->
+        <li class="nav-item">
+            <a class="nav-link" href="/coin/list">코인 분석</a>
+        </li>
+        <li sec:authorize = "isAuthenticated()" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">모의투자</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="/sim">내 투자</a>
+                <a class="dropdown-item" href="/sim/rank">투자 랭킹</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown" sec:authorize = "isAuthenticated()">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">게시판</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="/post">팁과 노하우</a>
+                <a class="dropdown-item" href="/post/user">내가 쓴 글</a>
+            </div>
+        </li>
+    </ul>
+        <a sec:authorize = "!isAuthenticated()" class="btn btn-dark" href="/login">Login</a>
+        <form sec:authorize = "isAuthenticated()" th:action="@{/logout}" method="post">
+            <button sec:authorize = "isAuthenticated()" type="submit" class="btn btn-dark">Logout</button>
+        </form>
+    </div>
+</nav>

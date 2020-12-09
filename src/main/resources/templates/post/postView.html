@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/header :: header">
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <a class="float-left" href="/post">목록</a>
+    <br clear="left">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>
+                <b th:text="${post.title}"></b>
+                <b class="float-right" style="font-size: small;"
+                   th:text="${post.anonymous} ? '익명 | ' + ${post.date}: ${post.user.name} + ' | ' + ${post.date}"></b>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <p style="min-height: 350px" th:utext="${postText}"></p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/post/{id}/remove (id = ${post.id})}"
+       th:class="(${#authentication.name} == ${post.user.name}) ? 'btn btn-danger float-right' : ''"
+       th:text ="(${#authentication.name} == ${post.user.name}) ? '삭제': ''"></a>
+    <form th:object="${commentForm}" class="form-inline">
+        <div class="form-group mb-2">
+            <div style="padding-right: 10px;">익명<input type="checkbox" th:field="*{anonymous}" th:value="true"></div>
+            <input type="text" th:field="*{text}" class="form-control" placeholder="댓글을 입력하세요.">
+            <button type="submit" class="btn btn-primary">입력</button>
+        </div>
+    </form>
+    <table class="table table-striped">
+        <colgroup>
+            <col width="10%">
+            <col width="*">
+            <col width="20%">
+            <col width="5%">
+        </colgroup>
+        <tbody>
+        <tr class="c" th:each="i : ${#numbers.sequence(comments.size() - 1, 0, -1)}" th:with="comment = ${comments[i]}">
+            <td th:text="${comment.anonymous} ? '익명' : ${comment.user.name}"></td>
+            <td th:text="${comment.text}"></td>
+            <td class="text-right" th:text="${#temporals.format(comment.date, 'yyyy-MM-dd HH:mm')}"></td>
+            <td>
+                <a th:href="@{/post/{id}/com/remove (id = ${post.id}, comId = ${comment.id})}"
+                   th:class="(${#authentication.name} == ${comment.user.name}) ? 'btn-sm btn-danger' : ''"
+                   th:text ="(${#authentication.name} == ${comment.user.name}) ? 'x': ''"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+
+</body>
+</html>

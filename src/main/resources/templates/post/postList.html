@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<style>
+    .display{
+        display: inline;
+    }
+</style>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div>
+        <div>
+            <a href="/post/new" class="btn btn-sm btn-danger float-right">글쓰기</a>
+            <form th:object="${postSearch}" class="form-inline">
+                <div class="form-group mx-sm-1 mb-2 display">
+                    <select th:field="*{check}" class="form-control">
+                        <option th:value="${false}" th:text="'제목'">option</option>
+                        <option th:value="${true}" th:text="'이름'">option
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group mb-2 display">
+                    <input type="text" th:field="*{text}" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">검색</button>
+            </form>
+        </div>
+        <table class="table table-striped">
+            <colgroup>
+                <col width="5%">
+                <col width="*">
+                <col width="15%">
+                <col width="20%">
+                <col width="10%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="c" th:each="post : ${postList}">
+                <td th:text="${postStat.count}"></td>
+                <td>
+                    <a th:href="@{/post/{id}/view (id=${post.id})}" th:text="${post.title}" style="color: black;"></a>
+                </td>
+                <td th:text="${post.anonymous}? '익명':${post.user.name}"></td>
+                <td th:text="${#temporals.format(post.date, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${post.view}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>

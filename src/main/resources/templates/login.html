@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<style>
+    .fieldError {
+        border-color: #bd2130;
+    }
+</style>
+<body class="d-flex align-items-center bg-auth border-top border-top-2 border-primary">
+<nav th:replace="fragments/bodyHeader :: bodyHeader" />
+<!-- CONTENT
+================================================== -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-xl-4 my-5">
+
+            <!-- Heading -->
+            <h1 class="display-4 text-center mb-3">
+                Ranking Coin
+            </h1>
+
+            <!-- Form -->
+            <form th:action="@{/login}" method="post">
+
+                <!-- Email address -->
+                <div class="form-group">
+
+                    <!-- Input -->
+                    <input type="text" name = "username" class="form-control" placeholder="아이디" th:class="${param.error}? 'form-control fiedlError' : 'form-control'">
+
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+
+                    <!-- Input group -->
+                    <div class="input-group input-group-merge">
+
+                        <!-- Input -->
+                        <input type="password" name="password" class="form-control form-control-appended" placeholder="비밀번호" th:class="${param.error}? 'form-control fiedlError' : 'form-control'">
+
+                    </div>
+                </div>
+                <p th:if="${param.error}" style="color: red">
+                    가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.</p>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-lg btn-block btn-primary mb-3">
+                    로그인
+                </button>
+
+                <!-- Link -->
+                <div class="text-center">
+                    <small class="text-muted text-center">
+                        Don't have an account yet? <a href="/user/new">회원가입</a>.
+                    </small>
+                </div>
+
+            </form>
+
+        </div>
+    </div> <!-- / .row -->
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- / .container -->
+</body>
+</html>
+
+

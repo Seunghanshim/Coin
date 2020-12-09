@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<style>
+    .fieldError {
+        border-color: #bd2130;
+    }
+</style>
+<body class="d-flex align-items-center bg-auth border-top border-top-2 border-primary">
+<nav th:replace="fragments/bodyHeader :: bodyHeader"/>
+<!-- CONTENT
+================================================== -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-xl-4 my-5">
+
+            <!-- Heading -->
+            <h1 class="display-4 text-center mb-3">
+                Ranking Coin
+            </h1>
+
+            <!-- Form -->
+            <form action="/user/new" th:object="${userForm}" method="post">
+
+                <!-- Email address -->
+                <div class="form-group">
+                    <!-- Input -->
+                    <input type="text" th:field="*{id}" class="form-control"
+                           placeholder="아이디"
+                           th:class="${#fields.hasErrors('id')}? 'form-control fieldError' : 'form-control'">
+
+                    <p th:if="${#fields.hasErrors('id')}"
+                       th:errors="*{id}">Incorrect date</p>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+
+                    <!-- Input group -->
+                    <div class="input-group input-group-merge">
+
+                        <!-- Input -->
+                        <input type="password" th:field="*{pwd}" class="form-control"
+                               placeholder="비밀번호"
+                               th:class="${#fields.hasErrors('pwd')}? 'form-control fieldError' : 'form-control'">
+
+                    </div>
+                    <p th:if="${#fields.hasErrors('pwd')}"
+                       th:errors="*{pwd}">Incorrect date</p>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+
+                    <!-- Input group -->
+                    <div class="input-group input-group-merge">
+
+                        <!-- Input -->
+                        <input type="password" th:field="*{pwdCh}" class="form-control"
+                               placeholder="비밀번호 확인"
+                               th:class="${#fields.hasErrors('pwdCh')}? 'form-control fieldError' : 'form-control'">
+
+                    </div>
+                    <p th:if="${#fields.hasErrors('pwdCh')}"
+                       th:errors="*{pwdCh}">Incorrect date</p>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-lg btn-block btn-primary mb-3">
+                    가입
+                </button>
+
+
+            </form>
+
+        </div>
+    </div> <!-- / .row -->
+    <div th:replace="fragments/footer :: footer" />
+</div>
+</body>
+</html>
+
+

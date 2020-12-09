@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<style>
+    .display{
+        display: inline;
+    }
+</style>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div>
+        <table class="table-sm table-hover">
+            <colgroup>
+                <col width="40%">
+                <col width="*">
+            </colgroup>
+            <tbody>
+            <tr>
+                <td>ID</td>
+                <td class="text-right" th:text="${#authentication.name}"></td>
+            </tr>
+            <tr>
+                <td>총 게시글</td>
+                <td class="text-right" th:text="${postSize}"></td>
+            </tr>
+            <tr>
+                <td>총 댓글</td>
+                <td class="text-right" th:text="${comSize}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <table class="table table-striped">
+            <colgroup>
+                <col width="5%">
+                <col width="*">
+                <col width="20%">
+                <col width="10%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>제목</th>
+                <th>작성일</th>
+                <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="c" th:each="post : ${postList}">
+                <td th:text="${postStat.count}"></td>
+                <td>
+                    <a th:href="@{/post/{id}/view (id=${post.id})}" th:text="${post.title}" style="color: black;"></a>
+                </td>
+                <td th:text="${#temporals.format(post.date, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${post.view}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>
